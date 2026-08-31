@@ -1,7 +1,10 @@
 # c6s Skills
 
-Official private-preview skills and plugins for [c6s](https://c6s.whitekiwi.link),
+Official public-preview skills and plugins for [c6s](https://c6s.whitekiwi.link),
 the approval-gated secret system displayed to users as Cerberus.
+
+These workflow definitions help agents use the c6s CLI without placing secret values
+in prompts, logs, or tool arguments. Product source code remains private during beta.
 
 The single `c6s` plugin provides five intentionally separated workflows:
 
@@ -14,7 +17,7 @@ The single `c6s` plugin provides five intentionally separated workflows:
 There is deliberately no agent approval workflow. A human-controlled trusted
 Cerberus app remains the only approval surface.
 
-## Private-preview install
+## Install
 
 Install the stable CLI first:
 
@@ -39,3 +42,11 @@ access to an account.
 ## License
 
 Proprietary and confidential. See [LICENSE](LICENSE).
+
+## Feedback and security
+
+Report workflow bugs and feature requests in
+[c6shq/feedback](https://github.com/c6shq/feedback/issues/new/choose). Do not include
+secret values, credentials, recovery material, or unredacted logs. Report suspected
+vulnerabilities privately using the c6s
+[security policy](https://github.com/c6shq/.github/blob/main/SECURITY.md).
