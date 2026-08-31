@@ -1,6 +1,6 @@
 {
   "name": "c6s",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Set up, find, organize, request, and safely run with c6s.",
   "author": {
     "name": "c6shq",
@@ -8,7 +8,7 @@
   },
   "homepage": "https://docs.c6s.whitekiwi.link",
   "repository": "https://github.com/c6shq/skills",
-  "license": "Proprietary",
+  "license": "MIT",
   "keywords": ["c6s", "cerberus", "secrets", "approval", "mcp"],
   "skills": "./skills/",
   "interface": {

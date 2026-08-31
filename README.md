@@ -41,7 +41,9 @@ access to an account.
 
 ## License
 
-Proprietary and confidential. See [LICENSE](LICENSE).
+The public agent workflow definitions are available under the [MIT License](LICENSE).
+This does not license the c6s service, CLI, Cerberus applications, trademarks, or
+private product source code.
 
 ## Feedback and security
 
