@@ -22,7 +22,7 @@ Cerberus app remains the only approval surface.
 Install the stable CLI first:
 
 ```sh
-brew install c6shq/tap/c6s
+brew install c6shq/tap/c6s-cli
 ```
 
 Then add this repository as a marketplace and install the plugin:

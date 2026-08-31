@@ -20,7 +20,7 @@ and the relevant `c6s help <command>` instead of assuming a newer command exists
 ## Onboard in dependency order
 
 1. Install only when requested. Stable Apple Silicon macOS supports
-   `brew install c6shq/tap/c6s` or the checksum-verifying public installer.
+   `brew install c6shq/tap/c6s-cli` or the checksum-verifying public installer.
 2. Sign in with `c6s login --provider google|apple`; use `c6s account list` and
    `c6s account switch` when more than one account is configured.
 3. Create the local identity with `c6s device setup`, then enroll with
@@ -36,3 +36,9 @@ does not log in, enroll a device, connect a vault, or enable MCP automatically.
 
 If authentication, Keychain access, device trust, or encrypted sync fails, report
 the failing boundary without weakening it or deleting account/vault state.
+
+For a confirmed lost or compromised CLI device, inspect the active account and
+remote device status first, then use `c6s device revoke --yes`. Explain that it
+revokes the server device and session and removes only that account's local remote
+registration and wrapped vault key; it preserves other accounts and the encrypted
+local vault. Do not run it as a generic sync repair or without explicit authority.
