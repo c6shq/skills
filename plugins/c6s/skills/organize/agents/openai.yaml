@@ -1,0 +1,4 @@
+interface:
+  display_name: "Organize c6s"
+  short_description: "Structure vault items without exposing secrets."
+  default_prompt: "Use $organize to create or reorganize this c6s item safely."

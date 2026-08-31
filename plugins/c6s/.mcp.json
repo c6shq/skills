@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "c6s": {
+      "command": "c6s",
+      "args": ["mcp"],
+      "enabled": false,
+      "env_vars": ["PATH"],
+      "startup_timeout_sec": 10,
+      "tool_timeout_sec": 120
+    }
+  }
+}

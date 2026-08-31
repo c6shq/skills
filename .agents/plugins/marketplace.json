@@ -1,0 +1,20 @@
+{
+  "name": "c6s-skills",
+  "interface": {
+    "displayName": "c6s Skills"
+  },
+  "plugins": [
+    {
+      "name": "c6s",
+      "source": {
+        "source": "local",
+        "path": "./plugins/c6s"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

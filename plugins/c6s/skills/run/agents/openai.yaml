@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run with c6s"
+  short_description: "Execute only an approved one-time c6s request."
+  default_prompt: "Use $run to execute this approved c6s request without revealing its secret."

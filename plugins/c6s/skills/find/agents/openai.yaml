@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find in c6s"
+  short_description: "Find vault metadata without revealing values."
+  default_prompt: "Use $find to locate the right c6s vault item without revealing its value."

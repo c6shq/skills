@@ -1,0 +1,32 @@
+{
+  "name": "c6s",
+  "version": "0.1.0",
+  "description": "Set up, find, organize, request, and safely run with c6s.",
+  "author": {
+    "name": "c6shq",
+    "url": "https://c6s.whitekiwi.link"
+  },
+  "homepage": "https://docs.c6s.whitekiwi.link",
+  "repository": "https://github.com/c6shq/skills",
+  "license": "Proprietary",
+  "keywords": ["c6s", "cerberus", "secrets", "approval", "mcp"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "c6s",
+    "shortDescription": "Use secrets through explicit approval boundaries.",
+    "longDescription": "Official c6s skills for safe setup, value-free discovery, vault organization, exact approval requests, and one-time approved execution.",
+    "developerName": "c6shq",
+    "category": "Productivity",
+    "capabilities": ["Secure setup", "Secret metadata discovery", "Vault organization", "Approval requests", "Approved execution"],
+    "websiteURL": "https://c6s.whitekiwi.link",
+    "privacyPolicyURL": "https://c6s.whitekiwi.link/privacy/",
+    "termsOfServiceURL": "https://c6s.whitekiwi.link/terms/",
+    "brandColor": "#8C7CFF",
+    "defaultPrompt": [
+      "Find the right c6s item without revealing its value.",
+      "Prepare an exact c6s approval request for this action.",
+      "Run this approved c6s request once and redact its secret."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

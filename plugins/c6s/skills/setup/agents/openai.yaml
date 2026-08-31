@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set up c6s"
+  short_description: "Install, connect, and diagnose c6s safely."
+  default_prompt: "Use $setup to connect this device to my c6s account safely."

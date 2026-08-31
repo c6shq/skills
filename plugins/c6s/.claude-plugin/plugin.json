@@ -1,0 +1,14 @@
+{
+  "name": "c6s",
+  "version": "0.1.0",
+  "description": "Set up, find, organize, request, and safely run with c6s.",
+  "author": {
+    "name": "c6shq",
+    "url": "https://c6s.whitekiwi.link"
+  },
+  "homepage": "https://docs.c6s.whitekiwi.link",
+  "repository": "https://github.com/c6shq/skills",
+  "license": "Proprietary",
+  "keywords": ["c6s", "cerberus", "secrets", "approval", "mcp"],
+  "skills": "./skills/"
+}
