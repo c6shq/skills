@@ -36,11 +36,21 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 - A missing field is not a policy edit. Add it once through the authorized stdin
   path, then keep later policy changes value-preserving.
 
-Remote upload is a separate external mutation intended for initial upload and exact
-unchanged reconciliation. Run `c6s vault upload --yes` only when the user asked to
-synchronize, then inspect the remote metadata. A conflict is a stop condition: do
-not overwrite, delete, recreate, or choose a branch implicitly. Use the dedicated
-remote policy mutation when the requested difference is exactly one field policy.
+Remote upload is a separate external mutation intended only for an explicit initial
+local-to-hosted import. It is not continuous or bidirectional sync. Run `c6s vault
+upload --yes` only when the user asked for that initial import, then inspect remote
+metadata. Use the dedicated remote policy mutation when the requested difference is
+exactly one field policy.
+
+The upload plan reads active items and deletion tombstones before any write. A
+matching tombstone must stop the complete batch. Never delete/recreate an item,
+lower a revision, retry a 409, or choose a branch implicitly. If the user explicitly
+wants to preserve the local item as a new hosted item, inspect `c6s help vault
+reconcile` and use only the exact recovery command printed by `vault upload`. It
+must bind the local item ID and currently observed tombstone revision and include
+both `--keep-local-as-new` and `--yes`. A revision mismatch is a new stop condition.
+The recovery creates a new hosted ID, preserves the tombstone, never prints a value,
+and must be verified through value-free remote metadata.
 
 Deletion and field removal require explicit target confirmation and the CLI's
 `--yes` flag. This skill never approves a device, action request, or OTP request.

@@ -44,6 +44,12 @@ or enable MCP automatically.
 If authentication, Keychain access, device trust, or encrypted sync fails, report
 the failing boundary without weakening it or deleting account/vault state.
 
+`c6s vault upload` is an explicit initial local-to-hosted import, not a general sync
+repair. If it reports a tombstone conflict, do not retry the upload or delete remote
+state. Hand the exact local item ID and observed tombstone revision to the
+`c6s:organize` recovery flow only when the user chooses to keep that local item as a
+new hosted item.
+
 For a confirmed lost or compromised CLI device, inspect the selected profile and
 remote device status first, then use `c6s --profile <name> device revoke --yes`.
 Explain that it
