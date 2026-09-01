@@ -22,6 +22,10 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
   --field <label-or-id> --agent-policy <policy>`. This preserves the field identity,
   kind, sensitivity, and encrypted value; do not use `item set` merely to change a
   policy.
+- For an existing connected remote item, use its remote ID and add `--remote`. The
+  CLI reads the latest encrypted revision, changes one policy, and fails closed on a
+  concurrent write. Never lower local revisions or use `vault upload` as a conflict
+  override.
 - Use `reference_only` by default. Use `approved_injection` only when the user wants
   the exact field eligible for a separately approved action. Use `never_agent` when
   an agent must not use it.
@@ -32,9 +36,11 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 - A missing field is not a policy edit. Add it once through the authorized stdin
   path, then keep later policy changes value-preserving.
 
-Remote upload is a separate external mutation. Run `c6s vault upload --yes` only
-when the user asked to synchronize, then inspect the remote metadata. A conflict is
-a stop condition: do not overwrite, delete, recreate, or choose a branch implicitly.
+Remote upload is a separate external mutation intended for initial upload and exact
+unchanged reconciliation. Run `c6s vault upload --yes` only when the user asked to
+synchronize, then inspect the remote metadata. A conflict is a stop condition: do
+not overwrite, delete, recreate, or choose a branch implicitly. Use the dedicated
+remote policy mutation when the requested difference is exactly one field policy.
 
 Deletion and field removal require explicit target confirmation and the CLI's
 `--yes` flag. This skill never approves a device, action request, or OTP request.

@@ -24,7 +24,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.4"
+    assert codex["version"] == claude["version"] == "0.1.5"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
