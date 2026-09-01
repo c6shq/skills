@@ -18,6 +18,10 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 - Create structure with `c6s item create --kind <kind> --title <title>`.
 - Add or replace one field through `c6s item set <item-id> --field <label>
   --value-stdin --kind <kind> --agent-policy <policy>`.
+- Change only an existing field's agent policy through `c6s item policy <item-id>
+  --field <label-or-id> --agent-policy <policy>`. This preserves the field identity,
+  kind, sensitivity, and encrypted value; do not use `item set` merely to change a
+  policy.
 - Use `reference_only` by default. Use `approved_injection` only when the user wants
   the exact field eligible for a separately approved action. Use `never_agent` when
   an agent must not use it.
@@ -25,6 +29,8 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
   is not already available through an authorized local input channel, hand the stdin
   entry step to the user rather than asking them to paste it into the conversation.
 - Read the item back with `item inspect`; never verify a mutation by revealing it.
+- A missing field is not a policy edit. Add it once through the authorized stdin
+  path, then keep later policy changes value-preserving.
 
 Remote upload is a separate external mutation. Run `c6s vault upload --yes` only
 when the user asked to synchronize, then inspect the remote metadata. A conflict is
