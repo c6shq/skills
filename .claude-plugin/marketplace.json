@@ -12,7 +12,7 @@
       "name": "c6s",
       "source": "./plugins/c6s",
       "description": "Set up, find, organize, request, and safely run with c6s.",
-      "version": "0.1.2"
+      "version": "0.1.3"
     }
   ]
 }
