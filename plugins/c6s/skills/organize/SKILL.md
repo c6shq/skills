@@ -52,5 +52,11 @@ both `--keep-local-as-new` and `--yes`. A revision mismatch is a new stop condit
 The recovery creates a new hosted ID, preserves the tombstone, never prints a value,
 and must be verified through value-free remote metadata.
 
+If upload reports `vault_active_item_conflict`, stop before mutation. This is an
+active hosted branch, not a recoverable tombstone. Run only the exact local and
+remote value-free inspect commands in `nextCommands`; never run `vault reconcile`,
+repeat upload, or infer which protected value differs. A later branch choice requires
+separate explicit user authority and a command that preserves both branches.
+
 Deletion and field removal require explicit target confirmation and the CLI's
 `--yes` flag. This skill never approves a device, action request, or OTP request.

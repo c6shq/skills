@@ -16,6 +16,10 @@ and the relevant `c6s help <command>` instead of assuming a newer command exists
   `c6s profile default`. Select a non-default profile per command with the global
   `c6s --profile <name> ...` option; unattended processes may instead set
   `C6S_PROFILE` explicitly.
+- Verify the selected sign-in with `c6s whoami --json`. It performs server
+  verification and automatic session renewal without exposing credentials. Treat
+  “session ended” as a login requirement, but keep transient network renewal and
+  Keychain-read errors distinct and do not delete the profile for either one.
 - Inspect `c6s device status`, `c6s device remote-status`, `c6s vault status`, and
   `c6s vault remote-status` for the selected profile before changing state.
 - Do not print Keychain contents, bearer credentials, vault keys, recovery material,
@@ -49,6 +53,12 @@ repair. If it reports a tombstone conflict, do not retry the upload or delete re
 state. Hand the exact local item ID and observed tombstone revision to the
 `c6s:organize` recovery flow only when the user chooses to keep that local item as a
 new hosted item.
+
+A `vault_active_item_conflict` is different: an active hosted branch already owns
+the ID and has different encrypted content. Do not retry, reconcile, delete, or pick
+a winner. Use only the two value-free `item inspect` commands emitted by the CLI and
+report the local ID, hosted ID, hosted revision, and zero writes. `--json` emits the
+typed error on stderr and intentionally leaves stdout empty.
 
 For a confirmed lost or compromised CLI device, inspect the selected profile and
 remote device status first, then use `c6s --profile <name> device revoke --yes`.
