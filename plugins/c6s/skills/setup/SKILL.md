@@ -56,9 +56,13 @@ new hosted item.
 
 A `vault_active_item_conflict` is different: an active hosted branch already owns
 the ID and has different encrypted content. Do not retry, reconcile, delete, or pick
-a winner. Use only the two value-free `item inspect` commands emitted by the CLI and
-report the local ID, hosted ID, hosted revision, and zero writes. `--json` emits the
-typed error on stderr and intentionally leaves stdout empty.
+a winner. First use only the two value-free `item inspect` commands emitted by the
+CLI and report the local ID, hosted ID, hosted revision, and zero writes. `--json`
+emits the typed error on stderr and intentionally leaves stdout empty. If and only
+if the user explicitly chooses the hosted branch, hand the exact
+`resolutionCommands.keepRemote` command to `c6s:organize`. It is revision-bound,
+preserves the losing local branch as an encrypted local-only copy, and must perform
+zero hosted writes.
 
 For a confirmed lost or compromised CLI device, inspect the selected profile and
 remote device status first, then use `c6s --profile <name> device revoke --yes`.

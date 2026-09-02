@@ -55,8 +55,15 @@ and must be verified through value-free remote metadata.
 If upload reports `vault_active_item_conflict`, stop before mutation. This is an
 active hosted branch, not a recoverable tombstone. Run only the exact local and
 remote value-free inspect commands in `nextCommands`; never run `vault reconcile`,
-repeat upload, or infer which protected value differs. A later branch choice requires
-separate explicit user authority and a command that preserves both branches.
+repeat upload, or infer which protected value differs. If the user explicitly chooses
+the hosted branch, inspect `c6s help vault resolve` and run only the exact
+`resolutionCommands.keepRemote` command emitted for that conflict. It must bind the
+local ID, hosted ID, and reviewed hosted revision and include `--keep-remote`,
+`--preserve-local-as-copy`, and `--yes`. Never reconstruct or shorten it. Afterward,
+verify through value-free local and remote metadata that the local loser exists under
+a fresh ID with `syncDisposition=local_only_conflict_copy`, the reviewed hosted
+revision is unchanged, and the result reports `hostedWritesApplied: 0`. A moved
+branch, missing command, or unsupported CLI version is a new stop condition.
 
 Deletion and field removal require explicit target confirmation and the CLI's
 `--yes` flag. This skill never approves a device, action request, or OTP request.

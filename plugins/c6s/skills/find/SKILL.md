@@ -32,4 +32,6 @@ field ID, agent policy, and revision from the remote inspect result.
 For `vault_active_item_conflict`, use the exact local and remote `item inspect`
 commands returned in the error's `nextCommands`. Report only the protected metadata
 needed to distinguish branches. Do not reproduce the upload, run reconciliation, or
-turn the lookup into a branch-selection mutation.
+turn the lookup into a branch-selection mutation. If the user later makes an explicit
+branch choice, return control to `c6s:organize`; this read-only skill never runs the
+resolution command itself.
