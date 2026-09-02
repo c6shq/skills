@@ -1,6 +1,6 @@
 ---
 name: request
-description: Prepare and create an exact c6s approval-gated action request using remote field or encrypted-file revisions, process, and environment bindings. Use when protected input needs trusted-device approval; do not approve or execute the request.
+description: Prepare and create an exact c6s approval-gated action request using remote value, TOTP, or encrypted-file revisions plus process and environment bindings. Use when protected input needs trusted-device approval; do not approve or execute the request.
 ---
 
 # Request with c6s
@@ -15,6 +15,9 @@ Work only with remote metadata and never resolve the referenced value.
    `c6s attachment list <item-id> --json` to resolve the exact attachment ID,
    revision, ready state, filename, media type, size, and `approved_injection`
    policy. Stop if any part is ambiguous or ineligible; never export the file.
+   A TOTP reference is the narrow exception to ordinary injection policy: require an
+   exact `totp_seed` field classified `secret` with `never_agent`. Never request or
+   reveal the seed or a generated code.
 3. Require an absolute executable path. Do not wrap the command in a shell, add
    unreviewed arguments, or turn a narrow task into arbitrary command execution.
 4. Present the summary, executable, every argument, working directory, expiry
@@ -26,6 +29,11 @@ Work only with remote metadata and never resolve the referenced value.
    <absolute-executable> [args...]`. Bind an approved private file path with
    `--inject-file <item>:<attachment>:<revision>:<ENV>`; the request becomes Intent
    V3 and the CLI materializes it only after consuming the one-time grant.
+   For TOTP use `c6s otp request --summary <text> --inject
+   <item>:<field>:<revision>:<ENV> -- <absolute-executable> [args...]`. No code is
+   generated at request time. Tell the user that, after approval, c6s will generate a
+   fresh code immediately before the exact process starts and will not return it to
+   the agent.
 6. Read the returned request back with `c6s request inspect <request-id>` and report
    its state and expiry without secret values.
 

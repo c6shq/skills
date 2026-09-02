@@ -20,6 +20,12 @@ materializes approved files in a mode-`0600` temporary directory, invokes the
 executable without a shell, and removes temporary files after exit. It redacts exact
 injected values from bounded stdout and stderr.
 
+For a TOTP request, use the same execution command or `c6s request wait <request-id>
+--execute` when the user explicitly asked to wait. c6s may briefly wait out the last
+five seconds of a code window before consuming the grant, then derives a fresh code
+at process start. The seed and code never belong in output, chat, clipboard, logs, or
+manual verification. Do not replace this constrained execution with `item reveal`.
+
 Redaction is not general data-loss prevention: a program can transform or transmit a
 secret. Treat the executable and arguments—not just the displayed output—as the
 security decision. Do not retry when grant consumption or process start is ambiguous;
