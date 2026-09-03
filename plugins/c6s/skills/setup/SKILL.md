@@ -48,6 +48,23 @@ or enable MCP automatically.
 If authentication, Keychain access, device trust, or encrypted sync fails, report
 the failing boundary without weakening it or deleting account/vault state.
 
+For hosted item-read failures, require `c6s v0.9.12` or newer before diagnosing
+from the message. Older clients incorrectly collapsed authenticated-decryption and
+typed-document incompatibility into “the remote service is unavailable.” On current
+clients:
+
+- `vault_item_document_invalid` means the envelope authenticated but its typed-item
+  document is unsupported or invalid. Upgrade compatible clients first; do not
+  reconnect, delete, or replace a key.
+- `vault_item_decryption_failed` identifies one opaque hosted item ID and revision
+  that did not authenticate with the selected profile key. Do not infer that the
+  server is down, and do not delete the item or rotate keys automatically.
+- `c6s vault connect --json` is an idempotent key-consistency check, not a generic
+  repair. Current clients accept an equal server-provided key but fail closed as
+  `vault_key_mismatch` before changing Keychain or connection state when it differs.
+  Never use an older client to reconnect during a suspected key mismatch because it
+  may replace the stored hosted-vault key without preserving the prior one.
+
 `c6s vault upload` is an explicit initial local-to-hosted import, not a general sync
 repair. If it reports a tombstone conflict, do not retry the upload or delete remote
 state. Hand the exact local item ID and observed tombstone revision to the
