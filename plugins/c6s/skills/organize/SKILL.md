@@ -1,6 +1,6 @@
 ---
 name: organize
-description: Create and organize c6s vault item structure, metadata, semantic fields, and per-field agent policy. Use for explicit vault mutations; do not ask for secrets in chat, reveal values, or approve their use.
+description: Create and organize c6s vault items, semantic fields, encrypted file uploads, and agent policy. Use for explicit vault mutations; do not ask for secrets in chat, reveal values, or approve their use.
 ---
 
 # Organize c6s
@@ -14,6 +14,10 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 `public_key`, and `private_key`.
 
 ## Mutation boundary
+
+For an explicit file backup/upload, read [Encrypted attachments](references/attachments.md).
+Check the installed help first; upload support starts in CLI v0.9.19. This path uses
+an authorized existing local file without reading its contents into the conversation.
 
 - Create structure with `c6s item create --kind <kind> --title <title>`.
 - Add or replace one field through `c6s item set <item-id> --field <label>

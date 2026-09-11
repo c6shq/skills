@@ -10,7 +10,7 @@ The single `c6s` plugin provides five intentionally separated workflows:
 
 - `c6s:setup` — install, connect, configure, and diagnose c6s;
 - `c6s:find` — locate and inspect vault metadata without values;
-- `c6s:organize` — structure items, fields, and agent-use policy;
+- `c6s:organize` — structure items, fields, agent-use policy, and authorized encrypted file uploads;
 - `c6s:request` — create one exact approval-gated process request;
 - `c6s:run` — execute one already approved request with redacted output.
 
