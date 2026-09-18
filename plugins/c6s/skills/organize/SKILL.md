@@ -41,13 +41,21 @@ an authorized existing local file without reading its contents into the conversa
   path, then keep later policy changes value-preserving.
 
 Remote upload is a separate external mutation intended only for an explicit initial
-local-to-hosted import. It is not continuous or bidirectional sync. Run `c6s vault
-upload --yes` only when the user asked for that initial import, then inspect remote
-metadata. Use the dedicated remote policy mutation when the requested difference is
-exactly one field policy.
+local-to-hosted import. It is not continuous or bidirectional sync. For one item,
+check that installed `c6s help vault upload` exposes `--item`,
+then use `c6s vault upload --item <exact-local-item-id> --yes --json`. Resolve the ID
+through value-free inspection; title/wildcard selection is not supported. It reads
+only that local item, preserves its policies, and leaves unrelated local items and
+binding receipts untouched. Verify `localItemId`, `localItems: 1` and uploaded or
+unchanged counts, then inspect the resulting remote metadata. If the installed CLI
+lacks `--item`, stop for an upgrade; never silently broaden a one-item request to a
+whole-vault import. Use `c6s vault upload --yes` only for an explicitly requested
+whole-vault initial import. Use the dedicated remote policy mutation when the
+requested difference is exactly one field policy.
 
 The upload plan reads active items and deletion tombstones before any write. A
-matching tombstone must stop the complete batch. Never delete/recreate an item,
+matching selected-item tombstone must stop the complete plan (the one selected
+item, or the whole batch when no selector was given). Never delete/recreate an item,
 lower a revision, retry a 409, or choose a branch implicitly. If the user explicitly
 wants to preserve the local item as a new hosted item, inspect `c6s help vault
 reconcile` and use only the exact recovery command printed by `vault upload`. It

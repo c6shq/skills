@@ -66,7 +66,11 @@ clients:
   may replace the stored hosted-vault key without preserving the prior one.
 
 `c6s vault upload` is an explicit initial local-to-hosted import, not a general sync
-repair. If it reports a tombstone conflict, do not retry the upload or delete remote
+repair. When installed help exposes `--item <exact-local-item-id>`, use it for one
+authorized initial registration without processing unrelated local items. This
+does not resolve a conflict on the selected item, and a
+one-item request must never fall back to bulk upload on an older CLI.
+If it reports a tombstone conflict, do not retry the upload or delete remote
 state. Hand the exact local item ID and observed tombstone revision to the
 `c6s:organize` recovery flow only when the user chooses to keep that local item as a
 new hosted item.
