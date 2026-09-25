@@ -31,11 +31,8 @@ secret. Treat the executable and arguments—not just the displayed output—as 
 security decision. Do not retry when grant consumption or process start is ambiguous;
 inspect state and report the uncertainty. Never reveal the field to verify execution.
 
-If the owner has authorized `C6S_CONNECTION=agent`, retain that explicit connection
-and profile for inspection and execution. The connector consumes the exact grant
-and delivers only approved inputs to the signed client, which executes in the
-original client security session. It never transfers owner login tokens, vault keys
-or OTP seeds. Aggregate approved files are limited to 16 MiB; delivery expires in
-three seconds, but this is not a child-process runtime limit. A disconnected or
-expired delivery may already have consumed its grant: inspect state, do not retry,
-switch to direct access, or request a raw secret as a workaround.
+Keep the selected profile for inspection and execution. A failed target consumes
+its one-time grant but must not end account sign-in. If a local credential-store
+error prevents execution, use `c6s:setup` to diagnose that boundary, not a new
+connection session. After an ambiguous execution result, inspect state; do not
+retry, reset login, or reveal a raw secret as a workaround.

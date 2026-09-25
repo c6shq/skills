@@ -40,11 +40,11 @@ does not log in, enroll or approve a device, connect a vault, reveal a value, or
 access to an account.
 
 For SSH/agent-only Keychain errors, `c6s:setup` distinguishes account expiry from
-OS-store access. CLI v0.10.0 exposes `doctor` and an explicit owner-operated
-`agent serve` connector. Check installed help first. The connection is scoped to
-one profile and one macOS audit session, lasts at most twelve hours, and never
-replaces trusted-device approval for secret use. No persistent service account,
-password capture, Keychain ACL relaxation or automatic unlock is supplied.
+OS-store access. Use the ordinary selected profile and `doctor`; owner recovery
+uses Apple's hidden terminal prompt only when necessary. There is no connection
+daemon or session setup. No password capture, Keychain ACL relaxation, automatic
+unlock or account reset is supplied. CLI v0.10.2 removes the unrequested connector
+from v0.10.0–v0.10.1; use the current stable release.
 
 ## License
 

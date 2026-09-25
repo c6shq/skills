@@ -4,7 +4,7 @@
       "command": "c6s",
       "args": ["mcp"],
       "enabled": false,
-      "env_vars": ["PATH", "C6S_PROFILE", "C6S_CONNECTION"],
+      "env_vars": ["PATH", "C6S_PROFILE"],
       "startup_timeout_sec": 10,
       "tool_timeout_sec": 120
     }

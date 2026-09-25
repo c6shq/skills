@@ -31,33 +31,27 @@ and the relevant `c6s help <command>` instead of assuming a newer command exists
 
 Do not restart onboarding for a Keychain error. Resolve `type -a c6s` and the
 reviewed absolute binary's version first; stale PATH entries may select an old
-client. If installed help exposes them, use `c6s doctor --json` and
-`c6s agent status --json` in the failing execution session. They read no credentials;
-neither store status nor socket presence proves a working account.
+client. Use `c6s doctor --json` in the failing environment when installed help
+exposes it. This is metadata-only diagnosis, not proof of authenticated access.
 
-Current signed macOS clients can use an owner-operated local connector:
+Use ordinary commands with the selected profile. Do not prescribe a connection
+daemon, socket, session ID, second terminal, screen/PTY relay or twelve-hour lease.
+The connector in CLI v0.10.0–v0.10.1 was withdrawn; upgrade an affected installation
+to v0.10.2 or newer when installation is authorized.
 
-1. Report the failing session's `sessionId` and selected profile to the owner.
-2. The owner, not the agent, runs `c6s --profile <name> agent serve --allow-session
-   <sessionId> --ttl 12h` in their own authenticated terminal. Do not start it by
-   moving into a GUI/other security session, changing Keychain ACLs or capturing
-   an unlock password. No screen/PTY recovery relay is necessary.
-3. Only after owner startup, explicitly use `C6S_CONNECTION=agent` with the same
-   profile for `whoami`, remote metadata and request commands. Do not silently
-   fall back to direct access, change scope, or replay a failed request.
+If the local store is locked, ask the owner to run `/usr/bin/security
+unlock-keychain` interactively in their own SSH terminal, then the reviewed CLI's
+`whoami --json`. Password entry belongs only to Apple's hidden prompt, never
+chat, argv, environment or a file. Do not run the interactive recovery for them.
+Another terminal's success does not establish this agent's access: recheck the
+original failure once and report the result. Do not loop over unlock or OAuth login.
 
-The connector is foreground, local, signed-peer and audit-session bound, not a
-restart-persistent service account. It stops on owner exit or at most twelve hours;
-credential-store denial fails the operation. The OS may still require the owner to unlock their own
-terminal through Apple's hidden prompt. Another terminal's successful unlock does
-not prove this agent can read credentials. Do not loop over unlock or OAuth login.
-
-Connection permission is not secret-use permission. Exact trusted-device approval
-is still required. Reveal, policy edits, uploads, account changes and device approval
-are denied through this connector. Preserve profiles, refresh credentials, devices
-and vaults on every failure; hand off genuine owner authentication instead of
-deleting state. For `session_metadata_unavailable`, repair profile-file storage and
-retry the read; do not log out or restore an old rotated refresh token.
+An unlocked store can still deny item access. Diagnose signed binary identity and
+item permissions; do not weaken Keychain ACLs, disable locking, switch security
+sessions or recreate credentials. Preserve profiles, refresh credentials, devices
+and vaults on failure. For `session_metadata_unavailable`, repair profile-file
+storage and retry the read; do not log out or restore an old rotated refresh token.
+Exact trusted-device approval remains necessary for protected actions.
 
 ### New account or explicitly requested enrollment
 
