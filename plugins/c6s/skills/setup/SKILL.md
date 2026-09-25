@@ -39,12 +39,21 @@ daemon, socket, session ID, second terminal, screen/PTY relay or twelve-hour lea
 The connector in CLI v0.10.0–v0.10.1 was withdrawn; upgrade an affected installation
 to v0.10.2 or newer when installation is authorized.
 
-If the local store is locked, ask the owner to run `/usr/bin/security
-unlock-keychain` interactively in their own SSH terminal, then the reviewed CLI's
-`whoami --json`. Password entry belongs only to Apple's hidden prompt, never
-chat, argv, environment or a file. Do not run the interactive recovery for them.
+Doctor reports advisory OS metadata, not an actual credential read. Before
+v0.10.3 a headless locked-status probe could reject the operation before macOS
+checked the item. Upgrade when authorized; current commands attempt the exact
+operation with authorization UI suppressed, preserving the actual OS error.
+
+If an actual credential read fails, check whether the owner's terminal already
+works. Only if it also fails, ask the owner to run `/usr/bin/security
+unlock-keychain` interactively there, then the reviewed CLI's `whoami --json`.
+Password entry belongs only to Apple's hidden prompt, never chat, argv,
+environment or a file. Do not run interactive recovery for them.
 Another terminal's success does not establish this agent's access: recheck the
 original failure once and report the result. Do not loop over unlock or OAuth login.
+If only the background caller fails, investigate its launch context. A supported
+runtime restart can interrupt other work and is not a proven repair until the
+original caller succeeds. Never claim a diagnostic patch unlocked macOS.
 
 An unlocked store can still deny item access. Diagnose signed binary identity and
 item permissions; do not weaken Keychain ACLs, disable locking, switch security
