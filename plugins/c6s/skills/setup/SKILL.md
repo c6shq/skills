@@ -27,6 +27,40 @@ and the relevant `c6s help <command>` instead of assuming a newer command exists
 
 ## Onboard in dependency order
 
+### Existing sign-in fails only in SSH or an agent
+
+Do not restart onboarding for a Keychain error. Resolve `type -a c6s` and the
+reviewed absolute binary's version first; stale PATH entries may select an old
+client. If installed help exposes them, use `c6s doctor --json` and
+`c6s agent status --json` in the failing execution session. They read no credentials;
+neither store status nor socket presence proves a working account.
+
+Current signed macOS clients can use an owner-operated local connector:
+
+1. Report the failing session's `sessionId` and selected profile to the owner.
+2. The owner, not the agent, runs `c6s --profile <name> agent serve --allow-session
+   <sessionId> --ttl 12h` in their own authenticated terminal. Do not start it by
+   moving into a GUI/other security session, changing Keychain ACLs or capturing
+   an unlock password. No screen/PTY recovery relay is necessary.
+3. Only after owner startup, explicitly use `C6S_CONNECTION=agent` with the same
+   profile for `whoami`, remote metadata and request commands. Do not silently
+   fall back to direct access, change scope, or replay a failed request.
+
+The connector is foreground, local, signed-peer and audit-session bound, not a
+restart-persistent service account. It stops on owner exit or at most twelve hours;
+credential-store denial fails the operation. The OS may still require the owner to unlock their own
+terminal through Apple's hidden prompt. Another terminal's successful unlock does
+not prove this agent can read credentials. Do not loop over unlock or OAuth login.
+
+Connection permission is not secret-use permission. Exact trusted-device approval
+is still required. Reveal, policy edits, uploads, account changes and device approval
+are denied through this connector. Preserve profiles, refresh credentials, devices
+and vaults on every failure; hand off genuine owner authentication instead of
+deleting state. For `session_metadata_unavailable`, repair profile-file storage and
+retry the read; do not log out or restore an old rotated refresh token.
+
+### New account or explicitly requested enrollment
+
 1. Install only when requested. Stable Apple Silicon macOS supports
    `brew install c6shq/tap/c6s-cli` or the checksum-verifying public installer.
 2. Sign in with `c6s login --provider google --name <profile>`. Each profile has

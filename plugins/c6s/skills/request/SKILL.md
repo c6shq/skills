@@ -40,3 +40,10 @@ Work only with remote metadata and never resolve the referenced value.
 Do not create duplicate requests after an ambiguous response. Do not approve,
 reject, execute, poll indefinitely, or claim that a notification was delivered.
 Approval belongs only to the human-controlled trusted Cerberus app.
+
+When setup established an owner-authorized `C6S_CONNECTION=agent`, preserve that
+explicit connection and profile throughout metadata lookup and creation. Connection
+failure is not a login reset: do not drop the mode, attempt a different account, or
+create a duplicate request after an ambiguous reply. The connector does not approve
+requests. Approved-file requests through it support at most 16 MiB in aggregate;
+larger owner workflows require a separately authorized supported execution path.

@@ -24,7 +24,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.13"
+    assert codex["version"] == claude["version"] == "0.1.14"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
@@ -32,7 +32,7 @@ def main() -> None:
         "command": "c6s",
         "args": ["mcp"],
         "enabled": False,
-        "env_vars": ["PATH"],
+        "env_vars": ["PATH", "C6S_PROFILE", "C6S_CONNECTION"],
         "startup_timeout_sec": 10,
         "tool_timeout_sec": 120,
     }
@@ -42,6 +42,13 @@ def main() -> None:
     }
     assert skill_directories == EXPECTED_SKILLS
     assert "approve" not in skill_directories
+    setup = (PLUGIN / "skills" / "setup" / "SKILL.md").read_text(encoding="utf-8")
+    assert "C6S_CONNECTION=agent" in setup
+    assert "Do not loop over unlock or OAuth login" in setup
+    assert "not a" in setup and "restart-persistent service account" in setup
+    run = (PLUGIN / "skills" / "run" / "SKILL.md").read_text(encoding="utf-8")
+    assert "original client security session" in run
+    assert "do not retry" in run
     for name in EXPECTED_SKILLS:
         skill_text = (PLUGIN / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
         prompt_text = (PLUGIN / "skills" / name / "agents" / "openai.yaml").read_text(encoding="utf-8")

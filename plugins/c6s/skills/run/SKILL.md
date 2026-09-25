@@ -30,3 +30,12 @@ Redaction is not general data-loss prevention: a program can transform or transm
 secret. Treat the executable and arguments—not just the displayed output—as the
 security decision. Do not retry when grant consumption or process start is ambiguous;
 inspect state and report the uncertainty. Never reveal the field to verify execution.
+
+If the owner has authorized `C6S_CONNECTION=agent`, retain that explicit connection
+and profile for inspection and execution. The connector consumes the exact grant
+and delivers only approved inputs to the signed client, which executes in the
+original client security session. It never transfers owner login tokens, vault keys
+or OTP seeds. Aggregate approved files are limited to 16 MiB; delivery expires in
+three seconds, but this is not a child-process runtime limit. A disconnected or
+expired delivery may already have consumed its grant: inspect state, do not retry,
+switch to direct access, or request a raw secret as a workaround.

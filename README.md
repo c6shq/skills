@@ -39,6 +39,13 @@ The bundled local `c6s mcp` declaration is disabled by default. Plugin installat
 does not log in, enroll or approve a device, connect a vault, reveal a value, or grant
 access to an account.
 
+For SSH/agent-only Keychain errors, `c6s:setup` distinguishes account expiry from
+OS-store access. CLI v0.10.0 exposes `doctor` and an explicit owner-operated
+`agent serve` connector. Check installed help first. The connection is scoped to
+one profile and one macOS audit session, lasts at most twelve hours, and never
+replaces trusted-device approval for secret use. No persistent service account,
+password capture, Keychain ACL relaxation or automatic unlock is supplied.
+
 ## License
 
 The public agent workflow definitions are available under the [MIT License](LICENSE).
