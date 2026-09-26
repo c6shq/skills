@@ -52,6 +52,11 @@ and one-time grant state. Skills 0.1.17 distinguish this protection from an inpu
 validation failure and prohibit automatic payment/action retries. Creation and
 execution errors identify the exact metadata reference without revealing values.
 
+Skills 0.1.18 document CLI v0.10.5+ `attachment policy`: change an existing file's
+agent policy without replacing its ID or re-entering its bytes. The workflow pins
+the ready revision and preserves the private encrypted retry journal. Eligibility
+changes remain separate from human approval and one-time execution.
+
 ## License
 
 The public agent workflow definitions are available under the [MIT License](LICENSE).

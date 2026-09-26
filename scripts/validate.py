@@ -24,7 +24,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.17"
+    assert codex["version"] == claude["version"] == "0.1.18"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
@@ -54,6 +54,11 @@ def main() -> None:
     request = (PLUGIN / "skills" / "request" / "SKILL.md").read_text(encoding="utf-8")
     assert "v0.10.4+" in request
     assert "never pad, combine, reveal" in request
+    attachments = (PLUGIN / "skills" / "organize" / "references" / "attachments.md").read_text(encoding="utf-8")
+    assert "v0.10.5+" in attachments
+    assert "attachment policy --resume" in attachments
+    assert "--revision CURRENT_REVISION" in attachments
+    assert "neither the policy nor journal grants execution" in attachments
     for name in EXPECTED_SKILLS:
         skill_text = (PLUGIN / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
         prompt_text = (PLUGIN / "skills" / name / "agents" / "openai.yaml").read_text(encoding="utf-8")

@@ -15,9 +15,12 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 
 ## Mutation boundary
 
-For an explicit file backup/upload, read [Encrypted attachments](references/attachments.md).
+For an explicit file backup/upload or existing attachment policy change, read
+[Encrypted attachments](references/attachments.md).
 Check the installed help first; upload support starts in CLI v0.9.19. This path uses
 an authorized existing local file without reading its contents into the conversation.
+Existing-file policy editing requires v0.10.5+ and `attachment policy` help. Do not
+delete/re-upload or use `item policy` for an attachment.
 
 - Create structure with `c6s item create --kind <kind> --title <title>`.
 - Add or replace one field through `c6s item set <item-id> --field <label>

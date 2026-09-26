@@ -31,6 +31,38 @@ This uploads directly to the connected remote vault. No `vault upload`, local it
 deletion, conflict reconciliation, or re-entry of the secret is needed afterward.
 Verify only attachment ID, revision, policy and `state: ready` via metadata.
 
+## Existing attachment policy
+
+For an explicit owner-authorized policy change, check `c6s attachment policy --help`
+(CLI v0.10.5+), then inspect `attachment list` under the selected profile. Bind the
+existing remote item ID, attachment ID and exact current `ready` revision:
+
+```sh
+c6s --profile PROFILE attachment policy REMOTE_ITEM_ID ATTACHMENT_ID \
+  --revision CURRENT_REVISION --agent-policy approved_injection --json
+```
+
+This preserves ID, filename, media type and exact plaintext bytes, resealing locally
+at revision N+1 with fresh encryption. No source file, secret re-entry, plaintext
+staging file, item recreation or `vault upload` is needed. The same policy is a no-op.
+All three policies are supported, but do not enable `approved_injection` without
+explicit authorization. This is owner mutation, not approval or execution.
+
+A private ciphertext-only policy journal is durably saved before remote mutation.
+The file can be temporarily unavailable during transfer. After an ambiguous
+transport failure or interruption, resume only the exact reported journal:
+
+```sh
+c6s --profile PROFILE attachment policy --resume /exact/policy-journal.json --json
+```
+
+Do not use `attachment upload --resume` for a policy journal. Do not repeat the
+original mutation or delete/re-upload to recover. Stop on changed/deleted/missing
+targets, a stale revision, invalid journal, or an authentication failure. Keep the
+journal private and unchanged. Verify only ID, new revision, policy and `ready`
+metadata afterward; then pass the new revision to `c6s:request`. Old approval
+requests do not carry forward, and neither the policy nor journal grants execution.
+
 ## Retry boundary
 
 The CLI saves a private ciphertext-only journal before remote mutation and reports
