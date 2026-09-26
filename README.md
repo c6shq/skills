@@ -46,6 +46,12 @@ daemon or session setup. No password capture, Keychain ACL relaxation, automatic
 unlock or account reset is supplied. CLI v0.10.2 removes the unrequested connector
 from v0.10.0–v0.10.1; use the current stable release.
 
+CLI v0.10.4 supports short approved inputs without rewriting them. For these
+inputs, child output is suppressed and the result still reports execution/exit
+and one-time grant state. Skills 0.1.17 distinguish this protection from an input
+validation failure and prohibit automatic payment/action retries. Creation and
+execution errors identify the exact metadata reference without revealing values.
+
 ## License
 
 The public agent workflow definitions are available under the [MIT License](LICENSE).

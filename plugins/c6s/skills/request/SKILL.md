@@ -41,6 +41,16 @@ Do not create duplicate requests after an ambiguous response. Do not approve,
 reject, execute, poll indefinitely, or claim that a notification was delivered.
 Approval belongs only to the human-controlled trusted Cerberus app.
 
+CLI v0.10.4+ preflights inputs before posting. A `request_input_*`,
+`request_item_revision_unavailable`, `request_field_unavailable`, or
+`request_totp_invalid` diagnostic identifies the exact metadata reference and
+reports no grant consumption/process start. Follow that cause; do not repeatedly
+resave metadata or request approval. Nonempty short values are supported, but the
+approved process's output is suppressed to protect them. On older clients, a
+generic eligibility error can mean the old four-byte minimum even when policy is
+correct. Upgrade when authorized; never pad, combine, reveal or change a field's
+policy as a workaround. Actual value changes require the user's organize scope.
+
 Use ordinary CLI commands pinned to the selected profile. A local credential-store
 error is not an invitation to reset login or create a connection daemon; diagnose
 with `c6s:setup`. Preserve the exact action and avoid duplicate creation after an

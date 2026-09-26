@@ -24,7 +24,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.16"
+    assert codex["version"] == claude["version"] == "0.1.17"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
@@ -49,6 +49,11 @@ def main() -> None:
     run = (PLUGIN / "skills" / "run" / "SKILL.md").read_text(encoding="utf-8")
     assert "must not end account sign-in" in run
     assert "do not retry" in run.lower()
+    assert "outputSuppressed: true" in run
+    assert "Do not rerun a payment" in run
+    request = (PLUGIN / "skills" / "request" / "SKILL.md").read_text(encoding="utf-8")
+    assert "v0.10.4+" in request
+    assert "never pad, combine, reveal" in request
     for name in EXPECTED_SKILLS:
         skill_text = (PLUGIN / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
         prompt_text = (PLUGIN / "skills" / name / "agents" / "openai.yaml").read_text(encoding="utf-8")

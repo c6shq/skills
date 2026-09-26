@@ -20,6 +20,19 @@ materializes approved files in a mode-`0600` temporary directory, invokes the
 executable without a shell, and removes temporary files after exit. It redacts exact
 injected values from bounded stdout and stderr.
 
+CLI v0.10.4+ also supports short approved values. When JSON reports
+`outputSuppressed: true` / `short_protected_input`, both child output streams were
+discarded; this is deliberate protection, not a failed execution. Use `exitCode`,
+`grantState` and `effectiveState` to report the result. Do not rerun a payment or
+other side effect just to obtain output; a consumed grant stays consumed even
+when the child fails. Verify the external result only through separately authorized
+read-only status, never by revealing the input.
+
+Typed input diagnostics report the exact reference without values. A pre-consumption
+policy, empty/NUL, type, TOTP or exact-revision failure is not repaired by repeated
+approval or metadata resaving. Inspect the reported metadata and stop for the
+appropriate correction; never broaden policy or mutate a value implicitly.
+
 For a TOTP request, use the same execution command or `c6s request wait <request-id>
 --execute` when the user explicitly asked to wait. c6s may briefly wait out the last
 five seconds of a code window before consuming the grant, then derives a fresh code
