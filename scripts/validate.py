@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +26,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.18"
+    assert codex["version"] == claude["version"] == "0.1.19"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
@@ -54,6 +56,14 @@ def main() -> None:
     request = (PLUGIN / "skills" / "request" / "SKILL.md").read_text(encoding="utf-8")
     assert "v0.10.4+" in request
     assert "never pad, combine, reveal" in request
+    waiting = (PLUGIN / "skills" / "request" / "references" / "waiting.md").read_text(encoding="utf-8")
+    assert "request wait REQUEST_ID --timeout 5m --execute --json" in waiting
+    assert "resume that handle" in waiting
+    assert "executionAttempted: false" in waiting
+    assert "do not retry execution" in waiting
+    assert "no MCP wait tool or approval callback" in waiting
+    assert "../request/references/waiting.md" in run
+    assert "references/waiting.md" in request
     attachments = (PLUGIN / "skills" / "organize" / "references" / "attachments.md").read_text(encoding="utf-8")
     assert "v0.10.5+" in attachments
     assert "attachment policy --resume" in attachments
@@ -67,6 +77,16 @@ def main() -> None:
         assert "C6S_CONNECTION" not in skill_text
         assert "agent serve" not in skill_text
         assert f"${name}" in prompt_text
+
+    # An agent must be able to follow every packaged reference after installation.
+    for path in (PLUGIN / "skills").rglob("*.md"):
+        for href in re.findall(r"\]\(([^)\s]+)\)", path.read_text(encoding="utf-8")):
+            link = urlsplit(href)
+            if link.scheme or link.netloc or not link.path:
+                continue
+            target = (path.parent / unquote(link.path)).resolve()
+            assert target.is_relative_to(PLUGIN), f"Reference escapes plugin: {path}: {href}"
+            assert target.is_file(), f"Missing packaged reference: {path}: {href}"
 
     repository_text = "\n".join(
         path.read_text(encoding="utf-8", errors="ignore")

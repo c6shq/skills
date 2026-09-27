@@ -1,6 +1,6 @@
 ---
 name: request
-description: Prepare and create an exact c6s approval-gated action request using remote value, TOTP, or encrypted-file revisions plus process and environment bindings. Use when protected input needs trusted-device approval; do not approve or execute the request.
+description: Prepare and create an exact c6s approval-gated action request, and optionally wait for its decision without executing it. Use when protected input needs trusted-device approval; do not approve or execute the request.
 ---
 
 # Request with c6s
@@ -8,8 +8,9 @@ description: Prepare and create an exact c6s approval-gated action request using
 An action request authorizes one exact process intent, not general secret access.
 Work only with remote metadata and never resolve the referenced value.
 
-1. Confirm the active account, trusted CLI device, connected remote vault, and the
-   user's intended action.
+1. Confirm the selected account profile, trusted CLI device, connected remote vault,
+   and the user's intended action. Pin `--profile PROFILE` on every command; do not
+   change the shared default profile for an agent task.
 2. For values, use remote item list/inspect to resolve the exact item ID, field ID,
    current revision, and `approved_injection` policy. For private files, use
    `c6s attachment list <item-id> --json` to resolve the exact attachment ID,
@@ -24,18 +25,24 @@ Work only with remote metadata and never resolve the referenced value.
    behavior, and each `item:field:revision -> ENV` or
    `item:attachment:revision -> ENV` binding before submission when those details
    were not already explicitly authorized.
-5. Create with `c6s request create --summary <text> --inject
-   <item>:<field>:<revision>:<ENV> [--cwd <absolute-path>] --
+5. Create with `c6s --profile PROFILE request create --summary <text> --inject
+   <item>:<field>:<revision>:<ENV> [--cwd <absolute-path>] --json --
    <absolute-executable> [args...]`. Bind an approved private file path with
    `--inject-file <item>:<attachment>:<revision>:<ENV>`; the request becomes Intent
    V3 and the CLI materializes it only after consuming the one-time grant.
-   For TOTP use `c6s otp request --summary <text> --inject
-   <item>:<field>:<revision>:<ENV> -- <absolute-executable> [args...]`. No code is
+   For TOTP use `c6s --profile PROFILE otp request --summary <text> --inject
+   <item>:<field>:<revision>:<ENV> --json -- <absolute-executable> [args...]`. No code is
    generated at request time. Tell the user that, after approval, c6s will generate a
    fresh code immediately before the exact process starts and will not return it to
    the agent.
-6. Read the returned request back with `c6s request inspect <request-id>` and report
-   its state and expiry without secret values.
+6. Read the returned request back with `c6s --profile PROFILE request inspect
+   <request-id> --json` and report its state and expiry without secret values.
+7. If asked to stay for approval, use the built-in bounded wait on that same ID and
+   profile, not a repeated create/list loop. Read [waiting and handoff](references/waiting.md)
+   before waiting. Request-only scope uses `request wait REQUEST_ID --timeout 5m
+   --json` without `--execute`. If the user already authorized the exact action after
+   approval, hand off to `c6s:run` for its wait-and-execute mode; no extra chat approval
+   is needed after the trusted app approves that same authorized action.
 
 Do not create duplicate requests after an ambiguous response. Do not approve,
 reject, execute, poll indefinitely, or claim that a notification was delivered.

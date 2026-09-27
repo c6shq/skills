@@ -11,8 +11,8 @@ The single `c6s` plugin provides five intentionally separated workflows:
 - `c6s:setup` — install, connect, configure, and diagnose c6s;
 - `c6s:find` — locate and inspect vault metadata without values;
 - `c6s:organize` — structure items, fields, agent-use policy, and authorized encrypted file uploads;
-- `c6s:request` — create one exact approval-gated process request;
-- `c6s:run` — execute one already approved request with redacted output.
+- `c6s:request` — create one exact approval-gated process request and optionally wait without execution;
+- `c6s:run` — execute one approved request, or wait for human approval before an explicitly authorized action.
 
 There is deliberately no agent approval workflow. A human-controlled trusted
 Cerberus app remains the only approval surface.
@@ -56,6 +56,19 @@ Skills 0.1.18 document CLI v0.10.5+ `attachment policy`: change an existing file
 agent policy without replacing its ID or re-entering its bytes. The workflow pins
 the ready revision and preserves the private encrypted retry journal. Eligibility
 changes remain separate from human approval and one-time execution.
+
+Approval waiting is a normal CLI workflow for values, TOTP and private files:
+
+```sh
+c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --json
+# Only when the exact action is already authorized after human approval:
+c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json
+```
+
+Use one of these modes, not both as a fixed sequence. The skills explain supervised
+process handles, the five-minute request/two-minute grant windows, result parsing,
+safe timeout recovery and no automatic replay. No approval callback, persistent
+daemon or agent-approval capability is introduced.
 
 ## License
 

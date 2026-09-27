@@ -1,20 +1,26 @@
 ---
 name: run
-description: Inspect and execute one exact approved c6s action request with a one-time grant and redacted output. Use only for an already approved request; do not create, approve, broaden, or silently retry it.
+description: Inspect and execute one exact c6s action request with a one-time grant and redacted output, or wait for human approval before executing when the user authorized that action. Do not create, approve, broaden, or silently retry requests.
 ---
 
 # Run with c6s
 
-Use the exact request ID. Inspect it immediately before execution and verify that it
-is approved, unexpired, and matches the action the user intends now: summary,
+Use the exact request ID and pin the selected profile. Inspect it before waiting or
+executing and verify that it matches the action the user intends now: summary,
 executable, arguments, working directory, item and field or attachment IDs,
 revisions, filenames, and environment destinations.
 
-If the request is pending, rejected, expired, missing, or different from the intended
-action, stop. A trusted human-controlled Cerberus app is the only approval surface;
-this skill must never obtain or simulate approval.
+For an already approved request, require `grantState: available` and
+`effectiveState: executable`, not just `state: approved`. For a pending request,
+wait only if the user asked to continue that exact action after human approval:
+`c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json`.
+Read [waiting and handoff](../request/references/waiting.md) before this mode.
+This works for ordinary values, TOTP and private files; it is not TOTP-specific.
+Stop for rejection, expiry, a consumed/unavailable grant, a missing request or a
+different intent. A trusted human-controlled Cerberus app is the only approval
+surface; this skill must never obtain or simulate approval.
 
-Execute once with `c6s request execute <request-id> [--json]`. The CLI revalidates
+Execute once with `c6s --profile PROFILE request execute <request-id> --json`. The CLI revalidates
 field and private-file eligibility, consumes the short-lived grant atomically,
 materializes approved files in a mode-`0600` temporary directory, invokes the
 executable without a shell, and removes temporary files after exit. It redacts exact
@@ -33,9 +39,8 @@ policy, empty/NUL, type, TOTP or exact-revision failure is not repaired by repea
 approval or metadata resaving. Inspect the reported metadata and stop for the
 appropriate correction; never broaden policy or mutate a value implicitly.
 
-For a TOTP request, use the same execution command or `c6s request wait <request-id>
---execute` when the user explicitly asked to wait. c6s may briefly wait out the last
-five seconds of a code window before consuming the grant, then derives a fresh code
+For a TOTP request, the same direct or wait-and-execute mode applies. c6s may briefly
+wait out the last five seconds of a code window before consuming the grant, then derives a fresh code
 at process start. The seed and code never belong in output, chat, clipboard, logs, or
 manual verification. Do not replace this constrained execution with `item reveal`.
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Request with c6s"
-  short_description: "Create exact approval-gated secret requests."
+  short_description: "Create exact requests and wait without executing."
   default_prompt: "Use $request to prepare an exact c6s approval request for this action."
