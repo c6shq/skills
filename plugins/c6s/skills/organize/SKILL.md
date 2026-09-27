@@ -15,6 +15,17 @@ are `text`, `concealed`, `multiline`, `url`, `email`, `phone`, `date`, `boolean`
 
 ## Mutation boundary
 
+For an explicit owner request to allow/revoke direct OTP code reads, first inspect
+`c6s help otp policy` and the exact remote field/revision. Use
+`c6s --profile PROFILE otp policy ITEM_ID --field FIELD_ID --revision CURRENT_REVISION
+--code-policy allow_read|approval_required --yes --json` with the owner's chosen
+policy, then verify metadata only. Keep the seed `secret` and `never_agent`.
+`allow_read` permits repeated derived-code reads until revoked, unlike one action
+approval; explain that consequence before enabling when not already explicit.
+Never enable access merely to repair a denied `otp get`, rewrite the seed, or retry
+a revision conflict. Upgrade all editing clients before the first opt-in. No real
+OTP needs to be retrieved to verify a policy edit.
+
 For an explicit file backup/upload or existing attachment policy change, read
 [Encrypted attachments](references/attachments.md).
 Check the installed help first; upload support starts in CLI v0.9.19. This path uses

@@ -3,13 +3,16 @@
 Official public-preview skills and plugins for [c6s](https://c6s.whitekiwi.link),
 the approval-gated secret system displayed to users as Cerberus.
 
-These workflow definitions help agents use the c6s CLI without placing secret values
-in prompts, logs, or tool arguments. Product source code remains private during beta.
+These workflow definitions help agents use the c6s CLI through explicit access
+boundaries. Approval-bound actions conceal values; a separately owner-permitted OTP
+read returns only the current code and expiry for its authorized destination.
+Product source code remains private during beta.
 
-The single `c6s` plugin provides five intentionally separated workflows:
+The single `c6s` plugin provides six intentionally separated workflows:
 
 - `c6s:setup` — install, connect, configure, and diagnose c6s;
 - `c6s:find` — locate and inspect vault metadata without values;
+- `c6s:otp` — read an already owner-permitted current OTP code with exact expiry;
 - `c6s:organize` — structure items, fields, agent-use policy, and authorized encrypted file uploads;
 - `c6s:request` — create one exact approval-gated process request and optionally wait without execution;
 - `c6s:run` — execute one approved request, or wait for human approval before an explicitly authorized action.
@@ -69,6 +72,12 @@ Use one of these modes, not both as a fixed sequence. The skills explain supervi
 process handles, the five-minute request/two-minute grant windows, result parsing,
 safe timeout recovery and no automatic replay. No approval callback, persistent
 daemon or agent-approval capability is introduced.
+
+Direct-code reads require installed `otp get`/`otp policy` support. Existing fields
+remain approval-only until an owner explicitly opts in. The new OTP skill never
+enables access itself, never returns a setup key, and does not silently retry login
+or payment attempts. Both direct reads and the existing confidential injection mode
+remain available; MCP is unchanged.
 
 ## License
 

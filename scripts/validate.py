@@ -11,7 +11,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "c6s"
-EXPECTED_SKILLS = {"setup", "find", "organize", "request", "run"}
+EXPECTED_SKILLS = {"setup", "find", "organize", "otp", "request", "run"}
 
 
 def load_json(path: Path) -> dict:
@@ -26,7 +26,7 @@ def main() -> None:
     mcp = load_json(PLUGIN / ".mcp.json")["mcpServers"]["c6s"]
 
     assert codex["name"] == claude["name"] == "c6s"
-    assert codex["version"] == claude["version"] == "0.1.19"
+    assert codex["version"] == claude["version"] == "0.1.20"
     assert codex_marketplace["name"] == claude_marketplace["name"] == "c6s-skills"
     assert codex_marketplace["plugins"][0]["source"]["path"] == "./plugins/c6s"
     assert claude_marketplace["plugins"][0]["version"] == codex["version"]
@@ -64,6 +64,15 @@ def main() -> None:
     assert "no MCP wait tool or approval callback" in waiting
     assert "../request/references/waiting.md" in run
     assert "references/waiting.md" in request
+    otp = (PLUGIN / "skills" / "otp" / "SKILL.md").read_text(encoding="utf-8")
+    assert "otp get ITEM_ID --field FIELD_ID --json" in otp
+    assert "otpCodePolicy: allow_read" in otp
+    assert "Do not change policy" in otp
+    assert "Do not issue `otp policy`" in otp
+    assert "expiresAt" in otp and "Preserve leading zeroes" in otp
+    assert "No OTP MCP result is provided" in otp
+    assert "Expiry does not make disclosure harmless" in otp
+    assert "c6s:otp" in request and "c6s:otp" in run
     attachments = (PLUGIN / "skills" / "organize" / "references" / "attachments.md").read_text(encoding="utf-8")
     assert "v0.10.5+" in attachments
     assert "attachment policy --resume" in attachments

@@ -11,8 +11,8 @@
     {
       "name": "c6s",
       "source": "./plugins/c6s",
-      "description": "Set up, find, organize, request, and safely run with c6s.",
-      "version": "0.1.19"
+      "description": "Set up, find, organize, read permitted OTPs, request, and safely run with c6s.",
+      "version": "0.1.20"
     }
   ]
 }

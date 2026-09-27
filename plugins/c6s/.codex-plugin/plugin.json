@@ -1,7 +1,7 @@
 {
   "name": "c6s",
-  "version": "0.1.19",
-  "description": "Set up, find, organize, request, and safely run with c6s.",
+  "version": "0.1.20",
+  "description": "Set up, find, organize, read permitted OTPs, request, and safely run with c6s.",
   "author": {
     "name": "c6shq",
     "url": "https://c6s.whitekiwi.link"
@@ -13,11 +13,11 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "c6s",
-    "shortDescription": "Use secrets through explicit approval boundaries.",
-    "longDescription": "Official c6s skills for safe setup, value-free discovery, vault organization, exact approval requests, and one-time approved execution.",
+    "shortDescription": "Use secrets through explicit access boundaries.",
+    "longDescription": "Official c6s skills for safe setup, value-free discovery, vault organization, owner-permitted OTP reads, exact approval requests, and one-time approved execution.",
     "developerName": "c6shq",
     "category": "Productivity",
-    "capabilities": ["Secure setup", "Secret metadata discovery", "Vault organization", "Approval requests", "Approved execution"],
+    "capabilities": ["Secure setup", "Secret metadata discovery", "Vault organization", "Permitted OTP reads", "Approval requests", "Approved execution"],
     "websiteURL": "https://c6s.whitekiwi.link",
     "privacyPolicyURL": "https://c6s.whitekiwi.link/privacy/",
     "termsOfServiceURL": "https://c6s.whitekiwi.link/terms/",

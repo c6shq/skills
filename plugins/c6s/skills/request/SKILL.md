@@ -8,6 +8,10 @@ description: Prepare and create an exact c6s approval-gated action request, and 
 An action request authorizes one exact process intent, not general secret access.
 Work only with remote metadata and never resolve the referenced value.
 
+If the user wants a code returned rather than injected, use `c6s:otp` only when the
+owner has already enabled direct-code reads. Do not turn an injection request into
+a plaintext read or change policy automatically.
+
 1. Confirm the selected account profile, trusted CLI device, connected remote vault,
    and the user's intended action. Pin `--profile PROFILE` on every command; do not
    change the shared default profile for an agent task.

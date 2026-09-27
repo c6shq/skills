@@ -43,6 +43,8 @@ For a TOTP request, the same direct or wait-and-execute mode applies. c6s may br
 wait out the last five seconds of a code window before consuming the grant, then derives a fresh code
 at process start. The seed and code never belong in output, chat, clipboard, logs, or
 manual verification. Do not replace this constrained execution with `item reveal`.
+An explicitly requested, already permitted direct-code read is a different workflow:
+use `c6s:otp`, never echo a code from the approved child as a workaround.
 
 Redaction is not general data-loss prevention: a program can transform or transmit a
 secret. Treat the executable and arguments—not just the displayed output—as the
