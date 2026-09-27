@@ -73,7 +73,8 @@ process handles, the five-minute request/two-minute grant windows, result parsin
 safe timeout recovery and no automatic replay. No approval callback, persistent
 daemon or agent-approval capability is introduced.
 
-Direct-code reads require installed `otp get`/`otp policy` support. Existing fields
+Skills 0.1.20 direct-code reads require CLI v0.11.0+ `otp get`/`otp policy` support
+and updated native editing clients (macOS 0.7.0+ and the matching iOS update). Existing fields
 remain approval-only until an owner explicitly opts in. The new OTP skill never
 enables access itself, never returns a setup key, and does not silently retry login
 or payment attempts. Both direct reads and the existing confidential injection mode
