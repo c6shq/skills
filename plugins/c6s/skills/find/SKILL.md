@@ -29,6 +29,12 @@ Legacy imported local IDs can differ from their server IDs. When another workflo
 needs a remote reference, use the ID returned by the remote list and verify the
 field ID, agent policy, and revision from the remote inspect result.
 
+For TOTP, newer remote inspection reports `otpCodeReadAllowed` explicitly.
+Absent/unknown `otpCodePolicy` never permits direct reads, but approval-bound OTP
+injection remains available for eligible seeds. Hand off to
+[OTP routing](../otp/references/routing.md) instead of concluding that OTP use
+is unavailable. Lookup itself does not create a request or read a code.
+
 For `vault_active_item_conflict`, use the exact local and remote `item inspect`
 commands returned in the error's `nextCommands`. Report only the protected metadata
 needed to distinguish branches. Do not reproduce the upload, run reconciliation, or

@@ -80,6 +80,13 @@ enables access itself, never returns a setup key, and does not silently retry lo
 or payment attempts. Both direct reads and the existing confidential injection mode
 remain available; MCP is unchanged.
 
+Skills 0.1.21 route approval-required OTPs through `otp request` and bounded
+wait/execute for an already authorized exact process. A denied direct read is not
+a reason to abandon that path. Browser-only input needs owner code-read opt-in or
+owner input, because a process injection approval does not return a code. Updated
+native client previews call the control Allow agent code reads and offer Agent code
+access for reviewing existing accounts together; deployment is tracked separately.
+
 ## License
 
 The public agent workflow definitions are available under the [MIT License](LICENSE).

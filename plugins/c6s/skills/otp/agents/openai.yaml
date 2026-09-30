@@ -1,4 +1,4 @@
 interface:
   display_name: "c6s:otp"
-  short_description: "Read an owner-permitted OTP code with exact expiry"
-  default_prompt: "Use $otp to obtain a current code for my authorized login from an already permitted c6s field."
+  short_description: "Read permitted OTPs or route to approved execution"
+  default_prompt: "Use $otp for my authorized login, choosing a permitted code read or approval-bound execution for its destination."

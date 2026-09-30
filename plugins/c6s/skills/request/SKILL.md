@@ -12,6 +12,12 @@ If the user wants a code returned rather than injected, use `c6s:otp` only when 
 owner has already enabled direct-code reads. Do not turn an injection request into
 a plaintext read or change policy automatically.
 
+For an OTP task, read [OTP routing](../otp/references/routing.md). A denied direct
+read can continue as an approval-bound exact process; missing `allow_read` is not
+a reason to abandon that route. Browser typing is not process injection. When the
+exact task was already authorized, trusted-app approval is the remaining approval;
+do not ask for another chat confirmation of the same executable and arguments.
+
 1. Confirm the selected account profile, trusted CLI device, connected remote vault,
    and the user's intended action. Pin `--profile PROFILE` on every command; do not
    change the shared default profile for an agent task.
@@ -22,7 +28,7 @@ a plaintext read or change policy automatically.
    policy. Stop if any part is ambiguous or ineligible; never export the file.
    A TOTP reference is the narrow exception to ordinary injection policy: require an
    exact `totp_seed` field classified `secret` with `never_agent`. Never request or
-   reveal the seed or a generated code.
+   reveal the seed or return the generated code; request only its injection.
 3. Require an absolute executable path. Do not wrap the command in a shell, add
    unreviewed arguments, or turn a narrow task into arbitrary command execution.
 4. Present the summary, executable, every argument, working directory, expiry
