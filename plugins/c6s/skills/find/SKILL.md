@@ -5,23 +5,25 @@ description: Find and inspect c6s vault item and encrypted-attachment metadata w
 
 # Find in c6s
 
-Confirm the active account and whether the task needs the local encrypted vault or
-the connected remote Personal vault. Prefer JSON output for exact identifiers.
+Confirm the intended account and whether the task needs the local encrypted vault or
+the connected remote Personal vault. Follow [Profile binding](references/profiles.md):
+choose `PROFILE` once and pin it in every account-specific command. Do not switch the
+shared default. Prefer JSON output for exact identifiers.
 
-- List local metadata with `c6s item list --json`.
-- List synchronized metadata with `c6s item list --remote --json`.
-- Inspect an exact local item with `c6s item inspect <item-id> --json`.
+- List local metadata with `c6s --profile PROFILE item list --json`.
+- List synchronized metadata with `c6s --profile PROFILE item list --remote --json`.
+- Inspect an exact local item with `c6s --profile PROFILE item inspect <item-id> --json`.
 - Inspect an exact remote revision with
-  `c6s item inspect <remote-item-id> --remote --json`.
+  `c6s --profile PROFILE item inspect <remote-item-id> --remote --json`.
 - List one remote item's encrypted-file metadata with
-  `c6s attachment list <remote-item-id> --json`; this returns IDs, revisions,
+  `c6s --profile PROFILE attachment list <remote-item-id> --json`; this returns IDs, revisions,
   filenames, media types, sizes, states, and policies, never file contents.
 
 Filter returned metadata to the user's need instead of opening every item. Treat
 titles, contexts, account aliases, item IDs, field IDs, and revisions as protected
 metadata even though they are not secret values.
 
-Never run `c6s item reveal --show`, read encrypted vault files directly, inspect
+Never run `item reveal --show`, read encrypted vault files directly, inspect
 Keychain entries, or infer a value from surrounding metadata. Never upload, mutate,
 request, approve, or execute as part of a lookup.
 
@@ -35,8 +37,10 @@ injection remains available for eligible seeds. Hand off to
 [OTP routing](../otp/references/routing.md) instead of concluding that OTP use
 is unavailable. Lookup itself does not create a request or read a code.
 
-For `vault_active_item_conflict`, use the exact local and remote `item inspect`
-commands returned in the error's `nextCommands`. Report only the protected metadata
+For `vault_active_item_conflict`, validate the exact local and remote `item inspect`
+commands returned in the error's `nextCommands` against the profile-binding rules
+before use. Missing, duplicate, or mismatched profile selectors are a stop condition;
+do not repair or execute those commands. Report only the protected metadata
 needed to distinguish branches. Do not reproduce the upload, run reconciliation, or
 turn the lookup into a branch-selection mutation. If the user later makes an explicit
 branch choice, return control to `c6s:organize`; this read-only skill never runs the
