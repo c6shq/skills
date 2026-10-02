@@ -14,3 +14,4 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: python3 scripts/validate.py
+      - run: python3 -B scripts/test_profile_binding.py

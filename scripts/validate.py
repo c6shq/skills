@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -12,6 +13,75 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "c6s"
 EXPECTED_SKILLS = {"setup", "find", "organize", "otp", "request", "run"}
+PROFILE_DOCUMENTS = (
+    "find/SKILL.md",
+    "organize/SKILL.md",
+    "find/references/profiles.md",
+)
+
+
+def profile_commands(text: str) -> list[list[str]]:
+    """Read documented argv only; never execute a CLI or shell command."""
+    return [shlex.split(command) for command in re.findall(r"`(c6s\s+[^`]+)`", text)]
+
+
+def explicit_profile(arguments: list[str]) -> str | None:
+    """Mirror the CLI selector syntax and child-argument boundary for linting."""
+    selector = None
+    index = 1
+    while index < len(arguments):
+        argument = arguments[index]
+        if argument == "--":
+            break
+        value = None
+        if argument == "--profile":
+            index += 1
+            assert index < len(arguments), "Missing profile value"
+            value = arguments[index].strip()
+        elif argument.startswith("--profile="):
+            value = argument.removeprefix("--profile=").strip()
+        if value is not None:
+            assert selector is None, "Duplicate profile selectors"
+            assert value, "Empty profile value"
+            selector = value
+        index += 1
+    return selector
+
+
+def assert_profile_pinned(arguments: list[str]) -> None:
+    # These read-only global commands do not select an account. Do not exempt the
+    # entire profile namespace: changing the default is not a workflow step.
+    if arguments[1:2] in (["help"], ["version"]):
+        return
+    if arguments[1:] == ["profile", "list", "--json"]:
+        return
+    if arguments[-1:] == ["--help"] and "--" not in arguments:
+        return
+    assert explicit_profile(arguments) == "PROFILE", f"Unpinned example: {arguments}"
+
+
+def validate_profile_binding() -> None:
+    for name in PROFILE_DOCUMENTS:
+        path = PLUGIN / "skills" / name
+        text = path.read_text(encoding="utf-8")
+        commands = profile_commands(text)
+        assert commands, f"No profile examples found: {path}"
+        for arguments in commands:
+            assert_profile_pinned(arguments)
+    for name in ("find", "organize"):
+        text = (PLUGIN / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
+        assert "references/profiles.md" in text
+        assert "shared default" in text
+        assert "nextCommands" in text
+        assert "stop condition" in text
+        assert "do not repair or execute" in text
+    guidance = (PLUGIN / "skills/find/references/profiles.md").read_text(encoding="utf-8")
+    for guard in (
+        "same immutable", "before any `--` boundary", "proceed unchanged",
+        "Do not append or replace", "remove revision guards", "channel-local",
+        "does not change that local storage boundary", "without a profile selector",
+    ):
+        assert guard in guidance, f"Missing profile safety guidance: {guard}"
 
 
 def load_json(path: Path) -> dict:
@@ -19,6 +89,7 @@ def load_json(path: Path) -> dict:
 
 
 def main() -> None:
+    validate_profile_binding()
     codex = load_json(PLUGIN / ".codex-plugin" / "plugin.json")
     claude = load_json(PLUGIN / ".claude-plugin" / "plugin.json")
     codex_marketplace = load_json(ROOT / ".agents" / "plugins" / "marketplace.json")
