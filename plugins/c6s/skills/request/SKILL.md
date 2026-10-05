@@ -73,7 +73,7 @@ error is not an invitation to reset login or create a connection daemon; diagnos
 with `c6s:setup`. Preserve the exact action and avoid duplicate creation after an
 ambiguous response.
 
-Configurable timing (upcoming V4 CLI, pending release): both windows default to 15m.
+Configurable timing (CLI v0.11.3+ and compatible V4 clients): both windows default to 15m.
 Read `c6s request config --json` without changing it. For an authorized request,
 `--approval-ttl` / `--execution-ttl` override the saved defaults before `--`.
 Accept only whole seconds 1s–24h; show the selected durations with the exact intent.

@@ -87,6 +87,11 @@ owner input, because a process injection approval does not return a code. Update
 native client previews call the control Allow agent code reads and offer Agent code
 access for reviewing existing accounts together; deployment is tracked separately.
 
+Skills 0.1.22 support CLI v0.11.3 configurable approval and execution windows.
+Both built-in defaults are 15 minutes; per-request options override saved channel
+defaults. Reading configuration does not approve a request or enable secret access.
+Use compatible V4 approval clients; older clients reject V4 requests.
+
 ## License
 
 The public agent workflow definitions are available under the [MIT License](LICENSE).
