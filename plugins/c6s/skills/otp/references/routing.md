@@ -29,7 +29,7 @@ Then use `c6s:run` when execution after trusted-device approval was already
 authorized:
 
 ```sh
-c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json
+c6s --profile PROFILE request wait REQUEST_ID --execute --json
 ```
 
 For request-only scope omit `--execute`. Read the

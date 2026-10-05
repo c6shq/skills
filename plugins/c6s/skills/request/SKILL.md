@@ -38,8 +38,8 @@ do not ask for another chat confirmation of the same executable and arguments.
 5. Create with `c6s --profile PROFILE request create --summary <text> --inject
    <item>:<field>:<revision>:<ENV> [--cwd <absolute-path>] --json --
    <absolute-executable> [args...]`. Bind an approved private file path with
-   `--inject-file <item>:<attachment>:<revision>:<ENV>`; the request becomes Intent
-   V3 and the CLI materializes it only after consuming the one-time grant.
+   `--inject-file <item>:<attachment>:<revision>:<ENV>`; compatible V4 requests include both timing windows;
+   older V3 creators remain supported and the CLI materializes it only after consuming the one-time grant.
    For TOTP use `c6s --profile PROFILE otp request --summary <text> --inject
    <item>:<field>:<revision>:<ENV> --json -- <absolute-executable> [args...]`. No code is
    generated at request time. Tell the user that, after approval, c6s will generate a
@@ -49,7 +49,7 @@ do not ask for another chat confirmation of the same executable and arguments.
    <request-id> --json` and report its state and expiry without secret values.
 7. If asked to stay for approval, use the built-in bounded wait on that same ID and
    profile, not a repeated create/list loop. Read [waiting and handoff](references/waiting.md)
-   before waiting. Request-only scope uses `request wait REQUEST_ID --timeout 5m
+   before waiting. Request-only scope uses `request wait REQUEST_ID
    --json` without `--execute`. If the user already authorized the exact action after
    approval, hand off to `c6s:run` for its wait-and-execute mode; no extra chat approval
    is needed after the trusted app approves that same authorized action.
@@ -72,3 +72,12 @@ Use ordinary CLI commands pinned to the selected profile. A local credential-sto
 error is not an invitation to reset login or create a connection daemon; diagnose
 with `c6s:setup`. Preserve the exact action and avoid duplicate creation after an
 ambiguous response.
+
+Configurable timing (upcoming V4 CLI, pending release): both windows default to 15m.
+Read `c6s request config --json` without changing it. For an authorized request,
+`--approval-ttl` / `--execution-ttl` override the saved defaults before `--`.
+Accept only whole seconds 1s–24h; show the selected durations with the exact intent.
+Do not silently persist preference changes. Earlier clients do not accept these
+options; inspect capabilities/help and do not re-create a request on version failure.
+Use a matching explicit wait timeout when a request-specific window exceeds the
+saved default. A configured duration is never approval or execution permission.

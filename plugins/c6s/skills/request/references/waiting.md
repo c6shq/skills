@@ -18,14 +18,14 @@ shared default profile as part of this flow.
 
 ```sh
 c6s --profile PROFILE request inspect REQUEST_ID --json
-c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --json
+c6s --profile PROFILE request wait REQUEST_ID --json
 ```
 
 The second command only waits. When the user has authorized the exact action and
 asked you to continue after approval, use this **instead**, through `c6s:run`:
 
 ```sh
-c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json
+c6s --profile PROFILE request wait REQUEST_ID --execute --json
 ```
 
 Do not run both as a fixed sequence: waiting without execution can use up the grant
@@ -53,8 +53,10 @@ broaden the action the user asked the agent to perform.
 
 ## Interpret the result, not just the exit status
 
-- Review expires after five minutes; approval issues a two-minute, one-use grant.
-  `--timeout` defaults to 5m (2s–10m accepted) and extends neither lifetime.
+- Read the exact request expiry and execution duration rather than assuming a fixed
+  lifetime. Compatible V4 clients default both windows to 15m; options override saved
+  channel defaults. Earlier clients retain 5m review and 2m execution. Omitting
+  `--timeout` uses the client default; waiting extends neither lifetime.
 - Wait-only returns metadata. `state: approved` is executable only when
   `grantState: available` / `effectiveState: executable`. Consumed means no replay.
 - Wait-and-execute returns the usual execution JSON. Inspect `exitCode` and

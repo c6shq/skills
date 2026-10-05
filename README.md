@@ -63,9 +63,9 @@ changes remain separate from human approval and one-time execution.
 Approval waiting is a normal CLI workflow for values, TOTP and private files:
 
 ```sh
-c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --json
+c6s --profile PROFILE request wait REQUEST_ID --json
 # Only when the exact action is already authorized after human approval:
-c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json
+c6s --profile PROFILE request wait REQUEST_ID --execute --json
 ```
 
 Use one of these modes, not both as a fixed sequence. The skills explain supervised

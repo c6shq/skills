@@ -13,7 +13,7 @@ revisions, filenames, and environment destinations.
 For an already approved request, require `grantState: available` and
 `effectiveState: executable`, not just `state: approved`. For a pending request,
 wait only if the user asked to continue that exact action after human approval:
-`c6s --profile PROFILE request wait REQUEST_ID --timeout 5m --execute --json`.
+`c6s --profile PROFILE request wait REQUEST_ID --execute --json`.
 Read [waiting and handoff](../request/references/waiting.md) before this mode.
 This works for ordinary values, TOTP and private files; it is not TOTP-specific.
 Stop for rejection, expiry, a consumed/unavailable grant, a missing request or a

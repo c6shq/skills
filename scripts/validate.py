@@ -128,13 +128,17 @@ def main() -> None:
     assert "v0.10.4+" in request
     assert "never pad, combine, reveal" in request
     waiting = (PLUGIN / "skills" / "request" / "references" / "waiting.md").read_text(encoding="utf-8")
-    assert "request wait REQUEST_ID --timeout 5m --execute --json" in waiting
+    assert "request wait REQUEST_ID --execute --json" in waiting
     assert "resume that handle" in waiting
     assert "executionAttempted: false" in waiting
     assert "do not retry execution" in waiting
     assert "no MCP wait tool or approval callback" in waiting
     assert "../request/references/waiting.md" in run
     assert "references/waiting.md" in request
+    assert "request config --json" in request
+    assert "--approval-ttl" in request and "--execution-ttl" in request
+    assert "Do not silently persist preference changes" in request
+    assert "--timeout 5m" not in waiting
     otp = (PLUGIN / "skills" / "otp" / "SKILL.md").read_text(encoding="utf-8")
     assert "otp get ITEM_ID --field FIELD_ID --json" in otp
     assert "otpCodePolicy: allow_read" in otp
