@@ -1,6 +1,6 @@
 # c6s Skills
 
-Official public-preview skills and plugins for [c6s](https://c6s.whitekiwi.link),
+Official public-preview skills and plugins for [c6s](https://c6s.app),
 the approval-gated secret system displayed to users as Cerberus.
 
 These workflow definitions help agents use the c6s CLI through explicit access
@@ -87,7 +87,8 @@ owner input, because a process injection approval does not return a code. Update
 native client previews call the control Allow agent code reads and offer Agent code
 access for reviewing existing accounts together; deployment is tracked separately.
 
-Skills 0.1.22 support CLI v0.11.3 configurable approval and execution windows.
+Skills 0.1.23 use current c6s.app product and documentation links. They support
+CLI v0.11.3 configurable approval and execution windows.
 Both built-in defaults are 15 minutes; per-request options override saved channel
 defaults. Reading configuration does not approve a request or enable secret access.
 Use compatible V4 approval clients; older clients reject V4 requests.

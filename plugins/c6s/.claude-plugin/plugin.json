@@ -1,12 +1,12 @@
 {
   "name": "c6s",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "description": "Set up, find, organize, read permitted OTPs, request, and safely run with c6s.",
   "author": {
     "name": "c6shq",
-    "url": "https://c6s.whitekiwi.link"
+    "url": "https://c6s.app"
   },
-  "homepage": "https://docs.c6s.whitekiwi.link",
+  "homepage": "https://docs.c6s.app",
   "repository": "https://github.com/c6shq/skills",
   "license": "MIT",
   "keywords": ["c6s", "cerberus", "secrets", "approval", "mcp"],
